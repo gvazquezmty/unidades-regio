@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rango Medio y Varios - Regio Fletes</title>
+    <style>
+        :root { --regio-green: #006400; --regio-white: #ffffff; --bg-body: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-body); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; background: var(--regio-white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        header { border-bottom: 3px solid var(--regio-green); margin-bottom: 20px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        h2 { color: var(--regio-green); margin: 0; }
+        .btn-regresar { text-decoration: none; color: var(--regio-green); font-weight: bold; }
+        #buscador { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 6px; }
+        table { width: 100%; border-collapse: collapse; }
+        thead { background-color: var(--regio-green); color: white; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .badge-motor { background: #fff3e0; color: #e65100; padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+        tr:hover { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div>
+            <h2>RANGO MEDIO Y SERVICIOS</h2>
+            <p style="margin: 5px 0 0; color: #666;">Microbuses, Pipas y Unidades de Apoyo</p>
+        </div>
+        <a href="index.html" class="btn-regresar">← Volver al Menú</a>
+    </header>
+    <input type="text" id="buscador" onkeyup="filtrarTabla()" placeholder="Buscar unidad (Pipa, Micro, Eco)...">
+    <table>
+        <thead>
+            <tr>
+                <th>Eco/Tipo</th>
+                <th>Marca / Modelo</th>
+                <th>Motor</th>
+                <th>Placas</th>
+                <th style="text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+    </table>
+</div>
+<script>
+    const unidades = [
+        {eco: "Micro", marca: "VOLKSWAGEN AT", año: "2023", motor: "MAN", placas: "42-LBA-90"},
+        {eco: "Micro", marca: "MERCEDES BENZ GRAN T", año: "2006", motor: "MERCEDES", placas: "17-LBA-92"},
+        {eco: "Micro", marca: "MERCEDES BENZ TORINO", año: "2007", motor: "MERCEDES", placas: "20-LBA-81"},
+        {eco: "Micro", marca: "INTERNATIONAL AYCO", año: "2007", motor: "DT466E", placas: "226-953-R"},
+        {eco: "PIPA", marca: "FREIGHTLINER FL70", año: "2003", motor: "CAT 3126", placas: "RH-3279-A"},
+        {eco: "25", marca: "MERCEDES BENZ FL70", año: "1991", motor: "OM366A", placas: "PL9723B"},
+        {eco: "chasis", marca: "MERCEDES BENZ FL70", año: "1991", motor: "MERCEDES", placas: "RE-36362"},
+        {eco: "16-PIPA", marca: "INTERNATIONAL DT530", año: "2012", motor: "DT570", placas: "RJ-2262-A"},
+        {eco: "FORD", marca: "FORD L9000", año: "1990", motor: "N/A", placas: "PM-6837-B"},
+        {eco: "Micro", marca: "DINA RUNNER 10", año: "2025", motor: "CUMMINS ISB 6.7", placas: "42-LBA-90"},
+        {eco: "39 PIPA", marca: "FREIGHTLINER CL120", año: "2008", motor: "ISX 450", placas: "RJ-2129-A"}
+    ];
+    const cuerpo = document.getElementById('cuerpoTabla');
+    unidades.forEach(u => {
+        cuerpo.innerHTML += `<tr>
+            <td style="font-weight:bold;">${u.eco}</td>
+            <td>${u.marca} (${u.año})</td>
+            <td><span class="badge-motor">${u.motor}</span></td>
+            <td>${u.placas}</td>
+            <td style="text-align:center;">
+                <a href="refacciones/rango_${u.eco}.html" style="text-decoration:none;">📦</a>
+                <a href="pdf/seguros/rango_${u.eco}.pdf" target="_blank" style="text-decoration:none;">📄</a>
+            </td>
+        </tr>`;
+    });
+    function filtrarTabla() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase();
+        const filas = cuerpo.getElementsByTagName('tr');
+        for (let fila of filas) {
+            fila.style.display = fila.innerText.toUpperCase().includes(busqueda) ? "" : "none";
+        }
+    }
+</script>
+</body>
+</html>

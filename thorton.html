@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidades Thorton - Regio Fletes</title>
+    <style>
+        :root {
+            --regio-green: #006400;
+            --regio-white: #ffffff;
+            --bg-body: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: var(--regio-white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid var(--regio-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 { color: var(--regio-green); margin: 0; }
+
+        .btn-regresar {
+            text-decoration: none;
+            color: var(--regio-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--regio-green);
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge-motor {
+            background: #e1f5fe;
+            color: #0277bd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .btn-action {
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin: 0 5px;
+        }
+
+        tr:hover { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>THORTON - REGIO FLETES</h2>
+            <p style="margin: 5px 0 0; color: #666;">Gestión de Unidades de Carga</p>
+        </div>
+        <a href="index.html" class="btn-regresar">← Volver al Menú</a>
+    </header>
+
+    <input type="text" id="buscador" onkeyup="filtrarTabla()" placeholder="Buscar por Eco o Modelo...">
+
+    <table id="tablaThorton">
+        <thead>
+            <tr>
+                <th>Eco</th>
+                <th>Marca / Tipo</th>
+                <th>Modelo</th>
+                <th>Motor</th>
+                <th style="text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    const unidades = [
+        {eco: "11", marca: "KENWORTH", tipo: "T370", año: "2019", motor: "PACCAR PX8"},
+        {eco: "12", marca: "KENWORTH", tipo: "T370", año: "2019", motor: "PACCAR PX8"},
+        {eco: "14", marca: "KENWORTH", tipo: "T370", año: "2019", motor: "PACCAR PX8"},
+        {eco: "15", marca: "KENWORTH", tipo: "T370", año: "2019", motor: "PACCAR PX8"},
+        {eco: "16", marca: "FREIGHTLINER", tipo: "M2", año: "2023", motor: "MBE 926-7"},
+        {eco: "17", marca: "FREIGHTLINER", tipo: "M2", año: "2023", motor: "MBE 926-7"},
+        {eco: "18", marca: "FREIGHTLINER", tipo: "M2", año: "2023", motor: "MBE 926-7"},
+        {eco: "19", marca: "FREIGHTLINER", tipo: "M2", año: "2023", motor: "MBE 926-7"},
+        {eco: "20", marca: "KENWORTH", tipo: "T370", año: "2014", motor: "PACCAR PX6"},
+        {eco: "21", marca: "FREIGHTLINER", tipo: "MBE", año: "2016", motor: "MBE 350HP"},
+        {eco: "22", marca: "KENWORTH", tipo: "T370", año: "2017", motor: "PX8"},
+        {eco: "23", marca: "FREIGHTLINER", tipo: "MBE", año: "2019", motor: "MBE4000-370"},
+        {eco: "24", marca: "KENWORTH", tipo: "T480", año: "2025", motor: "PX-9"},
+        {eco: "25", marca: "KENWORTH", tipo: "T480", año: "2025", motor: "PX-9"},
+        {eco: "26", marca: "KENWORTH", tipo: "T480", año: "2025", motor: "PX-9"},
+        {eco: "27", marca: "KENWORTH", tipo: "T480", año: "2025", motor: "PX-9"},
+        {eco: "28", marca: "FREIGHTLINER", tipo: "M2", año: "2013", motor: "MERCEDES"},
+        {eco: "29", marca: "KENWORTH", tipo: "T 370", año: "2012", motor: "PACCAR PX8"},
+        {eco: "30", marca: "KENWORTH", tipo: "T 370", año: "2014", motor: "PACCAR PX6"}
+    ];
+
+    const cuerpo = document.getElementById('cuerpoTabla');
+
+    function cargarTabla() {
+        unidades.forEach(u => {
+            const fila = `<tr>
+                <td style="font-weight:bold;">${u.eco}</td>
+                <td>${u.marca} ${u.tipo}</td>
+                <td>${u.año}</td>
+                <td><span class="badge-motor">${u.motor}</span></td>
+                <td style="text-align:center;">
+                    <a href="refacciones/thorton_eco${u.eco}.html" class="btn-action" title="Refacciones">📦</a>
+                    <a href="pdf/seguros/thorton_${u.eco}.pdf" target="_blank" class="btn-action" title="Seguro">📄</a>
+                </td>
+            </tr>`;
+            cuerpo.innerHTML += fila;
+        });
+    }
+
+    function filtrarTabla() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase();
+        const filas = cuerpo.getElementsByTagName('tr');
+        for (let i = 0; i < filas.length; i++) {
+            const texto = filas[i].innerText.toUpperCase();
+            filas[i].style.display = texto.indexOf(busqueda) > -1 ? "" : "none";
+        }
+    }
+
+    cargarTabla();
+</script>
+
+</body>
+</html>

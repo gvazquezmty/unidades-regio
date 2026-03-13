@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidades Tractores - Regio Fletes</title>
+    <style>
+        :root {
+            --regio-green: #006400;
+            --regio-light-green: #008000;
+            --regio-white: #ffffff;
+            --bg-body: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: var(--regio-white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid var(--regio-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 { color: var(--regio-green); margin: 0; }
+
+        .btn-regresar {
+            text-decoration: none;
+            color: var(--regio-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #buscador:focus { border-color: var(--regio-green); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--regio-green);
+            color: white;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .badge-motor {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .btn-action {
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin: 0 5px;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .btn-action:hover { transform: scale(1.2); }
+
+        tr:hover { background-color: #f9f9f9; }
+
+        @media (max-width: 600px) {
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>TRACTORES - REGIO FLETES</h2>
+            <p style="margin: 5px 0 0; color: #666;">Control de Unidades y Seguros</p>
+        </div>
+        <a href="index.html" class="btn-regresar">← Volver al Menú</a>
+    </header>
+
+    <input type="text" id="buscador" onkeyup="filtrarTabla()" placeholder="Buscar por número Económico (ej. 55)...">
+
+    <table id="tablaUnidades">
+        <thead>
+            <tr>
+                <th>Eco</th>
+                <th>Marca / Modelo</th>
+                <th class="hide-mobile">Motor</th>
+                <th class="hide-mobile">Placas</th>
+                <th style="text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    // Datos procesados de tu lista
+    const unidades = [
+        {eco: "31", marca: "FREIGHTLINER", tipo: "114SD", año: "2021", motor: "DD13", placas: "PN-3766-B"},
+        {eco: "32", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2016", motor: "ISX 450", placas: "PR-5215-B"},
+        {eco: "33", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2016", motor: "DD15", placas: "PR-5214-B"},
+        {eco: "34", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2023", motor: "DD16", placas: "RC-0028-A"},
+        {eco: "35", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2023", motor: "DD16", placas: "RC-0027-A"},
+        {eco: "36", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2023", motor: "DD16", placas: "RC-0026-A"},
+        {eco: "37", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2023", motor: "DD16", placas: "RC-0025-A"},
+        {eco: "38", marca: "FREIGHTLINER", tipo: "CASCADIA DC", año: "2024", motor: "DD13", placas: "PX-0730-B"},
+        {eco: "39", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2017", motor: "DD15", placas: "RL-1869-B"},
+        {eco: "40", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2012", motor: "DD6", placas: "PW-3582-B"},
+        {eco: "41", marca: "FREIGHTLINER", tipo: "M2", año: "2016", motor: "ISX 450", placas: "RF-4025-B"},
+        {eco: "42", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2012", motor: "DD6", placas: "PW-3565-B"},
+        {eco: "43", marca: "FREIGHTLINER", tipo: "COLUMBIA", año: "2016", motor: "ISX 450", placas: "RF-4017-B"},
+        {eco: "44", marca: "INTERNATIONAL", tipo: "PROSTAR", año: "2012", motor: "ISX 450", placas: "RK15755"},
+        {eco: "45", marca: "INTERNATIONAL", tipo: "PROSTAR", año: "2014", motor: "ISX 450", placas: "95AL9P"},
+        {eco: "46", marca: "INTERNATIONAL", tipo: "PROSTAR", año: "2013", motor: "ISX 450", placas: "57-AC-5R"},
+        {eco: "47", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2017", motor: "DD15", placas: "PX-3498-B"},
+        {eco: "48", marca: "FREIGHTLINER", tipo: "COLUMBIA", año: "2016", motor: "ISX 400", placas: "RE-6560-B"},
+        {eco: "49", marca: "INTERNATIONAL", tipo: "PROSTAR", año: "2014", motor: "ISX 450", placas: "94AL9P"},
+        {eco: "50", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2011", motor: "DD6", placas: "PW-3567-B"},
+        {eco: "52", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2017", motor: "DD15", placas: "RL-1870-B"},
+        {eco: "53", marca: "FREIGHTLINER", tipo: "CL120", año: "2007", motor: "DETROIT 60", placas: "RJ-2107-A"},
+        {eco: "54", marca: "INTERNATIONAL", tipo: "PROSTAR", año: "2013", motor: "ISX 450", placas: "58-AC-5R"},
+        {eco: "55", marca: "KENWORTH", tipo: "T 880 DC", año: "2025", motor: "X15", placas: "PX-3336-B"},
+        {eco: "56", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2025", motor: "DD16", placas: "RE-6325-B"},
+        {eco: "57", marca: "KENWORTH", tipo: "T880", año: "2025", motor: "X15", placas: "RH-4462-B"},
+        {eco: "58", marca: "FREIGHTLINER", tipo: "CASCADIA", año: "2021", motor: "DD16", placas: "RJ-2297-B"},
+        {eco: "59", marca: "INTERNATIONAL", tipo: "PROSTAR DC", año: "2021", motor: "X15", placas: "RK-5184-B"},
+        {eco: "60", marca: "KENWORTH", tipo: "T680", año: "2026", motor: "X15E6", placas: "RM-1714-B"},
+        {eco: "61", marca: "KENWORTH", tipo: "T680", año: "2026", motor: "X15E6", placas: "RM-1715-B"},
+        {eco: "62", marca: "KENWORTH", tipo: "T680", año: "2026", motor: "X15E6", placas: "RM-1716-B"},
+        {eco: "63", marca: "KENWORTH", tipo: "T680", año: "2026", motor: "X15E6", placas: "RM-2863-B"},
+        {eco: "64", marca: "KENWORTH", tipo: "T680", año: "2026", motor: "X15E6", placas: "RM-3034-B"}
+    ];
+
+    const cuerpo = document.getElementById('cuerpoTabla');
+
+    function cargarTabla() {
+        unidades.forEach(u => {
+            const fila = `<tr>
+                <td style="font-weight:bold;">${u.eco}</td>
+                <td>${u.marca} ${u.tipo} (${u.año})</td>
+                <td class="hide-mobile"><span class="badge-motor">${u.motor}</span></td>
+                <td class="hide-mobile">${u.placas}</td>
+                <td style="text-align:center;">
+                    <a href="refacciones/eco${u.eco}.html" class="btn-action" title="Inventario de Refacciones">📦</a>
+                    <a href="pdf/seguros/poliza_${u.eco}.pdf" target="_blank" class="btn-action" title="Póliza de Seguro">📄</a>
+                </td>
+            </tr>`;
+            cuerpo.innerHTML += fila;
+        });
+    }
+
+    function filtrarTabla() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase();
+        const filas = cuerpo.getElementsByTagName('tr');
+        for (let i = 0; i < filas.length; i++) {
+            const celdaEco = filas[i].getElementsByTagName('td')[0];
+            if (celdaEco) {
+                const textoEco = celdaEco.textContent || celdaEco.innerText;
+                filas[i].style.display = textoEco.toUpperCase().indexOf(busqueda) > -1 ? "" : "none";
+            }
+        }
+    }
+
+    cargarTabla();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remolques y Cajas - Regio Fletes</title>
+    <style>
+        :root {
+            --regio-green: #006400;
+            --regio-white: #ffffff;
+            --bg-body: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--regio-white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid var(--regio-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 { color: var(--regio-green); margin: 0; }
+
+        .btn-regresar {
+            text-decoration: none;
+            color: var(--regio-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: var(--regio-green);
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .badge-marca {
+            background: #f1f8e9;
+            color: #33691e;
+            padding: 3px 7px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .btn-action {
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin: 0 3px;
+        }
+
+        tr:hover { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>REMOLQUES - REGIO FLETES</h2>
+            <p style="margin: 5px 0 0; color: #666;">Control de Equipos y Pólizas Federales</p>
+        </div>
+        <a href="index.html" class="btn-regresar">← Volver al Menú</a>
+    </header>
+
+    <input type="text" id="buscador" onkeyup="filtrarTabla()" placeholder="Buscar por Eco, Serie o Placas...">
+
+    <table id="tablaRemolques">
+        <thead>
+            <tr>
+                <th>Eco</th>
+                <th>Marca</th>
+                <th>Año</th>
+                <th>Serie (NIV)</th>
+                <th>Placas Fed.</th>
+                <th style="text-align: center;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    const equipos = [
+        {eco: "31", marca: "GALLEGOS", año: "2025", serie: "3DG1V3195RG002491", fed: "57-UW-8T"},
+        {eco: "32", marca: "GALLEGOS", año: "2025", serie: "3DG1V3199SG001530", fed: ""},
+        {eco: "59", marca: "GALLEGOS", año: "2025", serie: "3DG1V3190SG001531", fed: ""},
+        {eco: "34", marca: "GALLEGOS", año: "2024", serie: "3DG1V3199RG001568", fed: "63-UW-8T"},
+        {eco: "35", marca: "GALLEGOS", año: "2025", serie: "3DG1V3190RG002494", fed: "60-UW-8T"},
+        {eco: "36", marca: "GALLEGOS", año: "2024", serie: "3DG1V3190RG001569", fed: "62-UW-8T"},
+        {eco: "37", marca: "GALLEGOS", año: "2025", serie: "3DG1V3192RG002495", fed: "61-UW-8T"},
+        {eco: "38", marca: "GALLEGOS", año: "2025", serie: "3DG1V3199RG002493", fed: "59-UW-8T"},
+        {eco: "40", marca: "IFA REMOLQUES", año: "2006", serie: "3A9C130286E074011", fed: "121UG8"},
+        {eco: "41", marca: "MCA", año: "2023", serie: "3N9230AC0PA016460", fed: "41UN5C"},
+        {eco: "42", marca: "DALTO", año: "2009", serie: "3DAV130H89D000090", fed: "18UC2M"},
+        {eco: "43", marca: "ATRO", año: "2013", serie: "3T73NNS45D2000251", fed: ""},
+        {eco: "44", marca: "MIRELES", año: "2008", serie: "3S9VA30808M044591", fed: "953WN6"},
+        {eco: "45", marca: "MIRELES", año: "2008", serie: "3S9VA30888M044645", fed: "960WN6"},
+        {eco: "46", marca: "MIRELES", año: "2007", serie: "3S9VA30867M044495", fed: "120UG8"},
+        {eco: "47", marca: "MCA", año: "2023", serie: "3N9230AC4PA016459", fed: "40UN5C"},
+        {eco: "49 full", marca: "MCA", año: "2016", serie: "3N9230AC7GA016021", fed: "88TY2P"},
+        {eco: "50", marca: "DALTO", año: "2009", serie: "3DAV130H8X9D000091", fed: "48UC2M"},
+        {eco: "51", marca: "MCA", año: "2016", serie: "3N9230AC0GA016023", fed: "86TY2P"},
+        {eco: "52 full", marca: "MCA", año: "2016", serie: "3N9230AC2GA016024", fed: "85TY2P"},
+        {eco: "53", marca: "MIRELES", año: "2008", serie: "3S9VA30848M044643", fed: "955WN6"},
+        {eco: "54", marca: "MCA", año: "2016", serie: "3N9230AC9GA016022", fed: "87TY2P"},
+        {eco: "55", marca: "GALLEGOS", año: "2025", serie: "3DG1V3197RG002492", fed: "58-UW-8T"},
+        {eco: "56", marca: "GALLEGOS", año: "2025", serie: "3DG1V3192SG001529", fed: ""},
+        {eco: "57 full", marca: "GALLEGOS", año: "2025", serie: "3DG1V316XSG003552", fed: "75-UW-5Y"},
+        {eco: "58 full", marca: "GALLEGOS", año: "2025", serie: "3DG1V3161SG003553", fed: "74-UW-5Y"},
+        {eco: "60", marca: "GALLEGOS", año: "2026", serie: "3DG1V3195TG001817", fed: "74UZ7M"},
+        {eco: "61", marca: "GALLEGOS", año: "2026", serie: "3DG1V3197TG001818", fed: "73UZ7M"},
+        {eco: "62", marca: "GALLEGOS", año: "2026", serie: "3DG1V3199TG001819", fed: "72UZ7M"},
+        {eco: "63", marca: "GALLEGOS", año: "2026", serie: "3DG1V3195TG001820", fed: "71UZ7M"},
+        {eco: "64", marca: "GALLEGOS", año: "2026", serie: "3DG1V3163TG001756", fed: "77UZ7M"},
+        {eco: "65", marca: "GALLEGOS", año: "2026", serie: "3DG1V3165TG001757", fed: "47UZ9M"},
+        {eco: "66", marca: "GALLEGOS", año: "2026", serie: "3DG1V3167TG001758", fed: "76UZ7M"},
+        {eco: "67", marca: "GALLEGOS", año: "2026", serie: "3DG1V3169TG001759", fed: "75UZ7M"}
+    ];
+
+    const cuerpo = document.getElementById('cuerpoTabla');
+
+    function cargarTabla() {
+        equipos.forEach(e => {
+            const fila = `<tr>
+                <td style="font-weight:bold;">${e.eco}</td>
+                <td><span class="badge-marca">${e.marca}</span></td>
+                <td>${e.año}</td>
+                <td style="font-family: monospace;">${e.serie}</td>
+                <td>${e.fed}</td>
+                <td style="text-align:center;">
+                    <a href="refacciones/remolque_${e.eco}.html" class="btn-action" title="Piezas Almacén">📦</a>
+                    <a href="pdf/seguros/fed_${e.eco}.pdf" target="_blank" class="btn-action" title="Póliza Federal">📄</a>
+                </td>
+            </tr>`;
+            cuerpo.innerHTML += fila;
+        });
+    }
+
+    function filtrarTabla() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase();
+        const filas = cuerpo.getElementsByTagName('tr');
+        for (let i = 0; i < filas.length; i++) {
+            const texto = filas[i].innerText.toUpperCase();
+            filas[i].style.display = texto.indexOf(busqueda) > -1 ? "" : "none";
+        }
+    }
+
+    cargarTabla();
+</script>
+
+</body>
+</html>
