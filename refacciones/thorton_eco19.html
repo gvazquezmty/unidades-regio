@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Refacciones Eco 32 - Regio Fletes</title>
+    <title>Refacciones Thorton Eco [NUMERO] - Regio Fletes</title>
     <style>
         :root {
             --regio-green: #006400;
@@ -20,7 +20,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        /* Encabezado y Botón Regresar */
         header {
             border-bottom: 3px solid var(--regio-green);
             margin-bottom: 20px;
@@ -40,20 +39,19 @@
             font-size: 0.9rem;
         }
 
-        /* Ficha Técnica de la Unidad */
         .ficha-unidad {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            background: #e8f5e9;
+            background: #e1f5fe; /* Azul claro para diferenciar Thortons de Tractores */
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 20px;
-            border-left: 5px solid var(--regio-green);
+            border-left: 5px solid #0277bd;
         }
 
         .ficha-item { font-size: 1rem; color: #333; }
-        .ficha-item strong { color: var(--regio-green); display: block; font-size: 0.8rem; text-transform: uppercase; }
+        .ficha-item strong { color: #0277bd; display: block; font-size: 0.8rem; text-transform: uppercase; }
 
         .search-box {
             width: 100%;
@@ -77,19 +75,20 @@
 
 <div class="container">
     <header>
-        <h2 style="color: var(--regio-green); margin:0;">DETALLE DE EQUIPO</h2>
-        <a href="../tractores.html" class="btn-regresar">← VOLVER AL LISTADO</a>
+        <h2 style="color: var(--regio-green); margin:0;">DETALLE THORTON</h2>
+        <a href="../thorton.html" class="btn-regresar">← VOLVER AL LISTADO</a>
     </header>
 
     <div class="ficha-unidad">
+    
+    <div class="ficha-item"><strong>Número Eco</strong>     19  </div>      
+<div class="ficha-item"><strong>Marca / Tipo</strong>   FREIGHTLINER    /   M2  </div>
+<div class="ficha-item"><strong>Modelo (Año)</strong>   2023    </div>      
+<div class="ficha-item"><strong>Motor</strong>  MBE 926-7   </div>      
+      
 
-<div class="ficha-item"><strong>Número Eco</strong>     31  </div>      
-<div class="ficha-item"><strong>Marca / Tipo</strong>   FREIGHTLINER    /   114SD   </div>
-<div class="ficha-item"><strong>Modelo (Año)</strong>   2021    </div>      
-<div class="ficha-item"><strong>Motor</strong>  DD13    </div>      
 
-     
-</div>
+    </div>
 
     <input type="text" id="busqueda" class="search-box" onkeyup="filtrar()" placeholder="Buscar refacción en esta unidad...">
 
@@ -104,26 +103,27 @@
                 <th>Estado</th>
             </tr>
         </thead>
-        <tbody id="tablaCuerpo">
-            </tbody>
+        <tbody id="tablaCuerpo"></tbody>
     </table>
 </div>
 
 <script>
-    // Datos de refacciones para el Eco 31 basados en tu catálogo
+    // LISTA DE REFACCIONES: Aquí pondrás los filtros específicos del motor
+    // Elaboro Ing. Luis Gerardo Vazquez Carrier
+    // Fecha 02 Abr 2026
+
     const productos = [
-   
 
-{   cod:    "   24-010109   ",desc:"    Aire donaldson  P544325/P607965 0   ",loc:" A0101A  ",min:  2   ,max:   21  ,actual:    12},
-{   cod:    "   24-010202   ",desc:"    Aceite Donaldson    P-550393    LF-3393 ",loc:" A0101A  ",min:  2   ,max:   19  ,actual:    12},
-{   cod:    "   24-010302   ",desc:"    Diesel Donaldson    P-550120    FF-146  ",loc:" A0101A  ",min:  2   ,max:   18  ,actual:    12}
+{   cod:    "   24-010102   ",desc:"    Aire donaldson  P607955 AF26154 ",loc:" A0101A  ",min:  2   ,max:   21  ,actual:    12},
+{   cod:    "   24-010204   ",desc:"    Aceite Donaldson    P-550761    LF-3914 ",loc:" A0101A  ",min:  2   ,max:   19  ,actual:    12},
+{   cod:    "   24-010312   ",desc:"    Diesel Cartucho Donaldson   P-550632    FF-5380 ",loc:" A0101A  ",min:  0   ,max:   0   ,actual:    12},
+{   cod:    "   24-010404   ",desc:"    Separador Donaldson P-551034    FS-19593    ",loc:" A0101A  ",min:  0   ,max:   0   ,actual:    12}
 
-
-
-    ];
+        ];
 
     function cargarTabla() {
         const tabla = document.getElementById("tablaCuerpo");
+        if(!tabla) return;
         tabla.innerHTML = "";
         productos.forEach(p => {
             const alerta = p.actual <= p.min ? '<span class="stock-alert">REORDEN</span>' : '<span style="color:green">OK</span>';
