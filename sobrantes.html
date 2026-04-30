@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobrantes de Bodega - Regio Fletes</title>
+    <style>
+        :root {
+            --regio-green: #006400;
+            --regio-white: #ffffff;
+            --bg-body: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            background: var(--regio-white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 3px solid var(--regio-green);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h2 { color: var(--regio-green); margin: 0; }
+
+        .btn-regresar {
+            text-decoration: none;
+            color: var(--regio-green);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        #buscador {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #buscador:focus { border-color: var(--regio-green); }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead { background-color: var(--regio-green); color: white; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+
+        /* Miniatura de la foto */
+        .img-pieza {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: transform 0.2s;
+        }
+
+        .img-pieza:hover { transform: scale(1.1); }
+
+        /* Estilo para la localización */
+        .badge-loc {
+            background: #e3f2fd;
+            color: #0d47a1;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1px solid #bbdefb;
+        }
+
+        tr:hover { background-color: #f9f9f9; }
+
+        @media (max-width: 600px) {
+            .hide-mobile { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>DEPURACIÓN DE BODEGA - PIEZAS</h2>
+            <p style="margin: 5px 0 0; color: #666;">Consulta de excedentes y refacciones disponibles</p>
+        </div>
+        <a href="index.html" class="btn-regresar">← Volver al Menú</a>
+    </header>
+
+    <input type="text" id="buscador" onkeyup="filtrarTabla()" placeholder="Buscar por nombre, folio o tarima...">
+
+    <table id="tablaPiezas">
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Folio</th>
+                <th>Descripción de la Pieza</th>
+                <th class="hide-mobile">Localización</th>
+                <th style="text-align: center;">Acción</th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla">
+            </tbody>
+    </table>
+</div>
+
+<script>
+    // 1. Limpiamos los datos: quitamos espacios y usamos minúsculas para evitar errores
+    const inventarioBodega = [
+        { folio: "406", desc: "CA326", tarima: "3" },
+        { folio: "407", desc: "LFP-936F", tarima: "3" },
+        { folio: "408", desc: "LFP 928F", tarima: "3" },
+        { folio: "409", desc: "LFH4204", tarima: "3" }
+    ];
+
+    const cuerpo = document.getElementById('cuerpoTabla');
+
+    function cargarTabla() {
+        if (!cuerpo) return; // Seguridad para evitar errores si no encuentra la tabla
+        cuerpo.innerHTML = ""; 
+        
+        inventarioBodega.forEach(p => {
+            const fila = `<tr>
+                <td>
+                    <a href="img/bodega/${p.folio}.jpg" target="_blank">
+                        <img src="img/bodega/${p.folio}.jpg" class="img-pieza" alt="Foto ${p.folio}" onerror="this.src='img/sin-foto.jpg'">
+                    </a>
+                </td>
+                <td style="font-weight:bold; color: #333;">${p.folio}</td>
+                <td>${p.desc}</td>
+                <td class="hide-mobile"><span class="badge-loc">📍 Tarima ${p.tarima}</span></td>
+                <td style="text-align:center;">
+                    <a href="img/bodega/${p.folio}.jpg" target="_blank" style="text-decoration:none; font-size: 1.2rem;" title="Ver imagen completa">👁️</a>
+                </td>
+            </tr>`;
+            cuerpo.innerHTML += fila;
+        });
+    }
+
+    function filtrarTabla() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase().trim();
+        const filas = cuerpo.getElementsByTagName('tr');
+        
+        for (let i = 0; i < filas.length; i++) {
+            const textoFila = filas[i].textContent || filas[i].innerText;
+            // Si el texto coincide, mostramos la fila, si no, la ocultamos
+            filas[i].style.display = textoFila.toUpperCase().indexOf(busqueda) > -1 ? "" : "none";
+        }
+    }
+
+    // Ejecutamos la carga inicial
+    cargarTabla();
+</script>
+</body>
+</html>
