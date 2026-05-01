@@ -5,91 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobrantes de Bodega - Regio Fletes</title>
     <style>
-        :root {
-            --regio-green: #006400;
-            --regio-white: #ffffff;
-            --bg-body: #f0f2f5;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-body);
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            background: var(--regio-white);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        header {
-            border-bottom: 3px solid var(--regio-green);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        :root { --regio-green: #006400; --regio-white: #ffffff; --bg-body: #f0f2f5; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-body); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; background: var(--regio-white); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        header { border-bottom: 3px solid var(--regio-green); margin-bottom: 20px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         h2 { color: var(--regio-green); margin: 0; }
-
-        .btn-regresar {
-            text-decoration: none;
-            color: var(--regio-green);
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        #buscador {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 1rem;
-            outline: none;
-        }
-
+        .btn-regresar { text-decoration: none; color: var(--regio-green); font-weight: bold; font-size: 0.9rem; }
+        #buscador { width: 100%; padding: 12px; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 6px; font-size: 1rem; outline: none; }
         #buscador:focus { border-color: var(--regio-green); }
-
         table { width: 100%; border-collapse: collapse; }
         thead { background-color: var(--regio-green); color: white; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-
-        /* Miniatura de la foto */
-        .img-pieza {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            border: 1px solid #ddd;
-            transition: transform 0.2s;
-        }
-
+        .img-pieza { width: 70px; height: 70px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 1px solid #ddd; transition: transform 0.2s; }
         .img-pieza:hover { transform: scale(1.1); }
-
-        /* Estilo para la localización */
-        .badge-loc {
-            background: #e3f2fd;
-            color: #0d47a1;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border: 1px solid #bbdefb;
-        }
-
+        .badge-loc { background: #e3f2fd; color: #0d47a1; padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; font-weight: bold; border: 1px solid #bbdefb; }
         tr:hover { background-color: #f9f9f9; }
-
-        @media (max-width: 600px) {
-            .hide-mobile { display: none; }
-        }
+        @media (max-width: 600px) { .hide-mobile { display: none; } }
     </style>
 </head>
 <body>
@@ -115,57 +46,508 @@
                 <th style="text-align: center;">Acción</th>
             </tr>
         </thead>
-        <tbody id="cuerpoTabla">
-            </tbody>
+        <tbody id="cuerpoTabla"></tbody>
     </table>
 </div>
 
 <script>
-    // 1. Limpiamos los datos: quitamos espacios y usamos minúsculas para evitar errores
+    // LISTA DE PRODUCTOS
     const inventarioBodega = [
-        { folio: "406", desc: "CA326", tarima: "3" },
-        { folio: "407", desc: "LFP-936F", tarima: "3" },
-        { folio: "408", desc: "LFP 928F", tarima: "3" },
-        { folio: "409", desc: "LFH4204", tarima: "3" }
+        
+        // Aquí puedes seguir pegando tus filas siguiendo este formato exacto
+         {folio:    "1" , desc:"    LAF 237   nota :    ", tarima:  "   1   "},
+ {folio:    "5" , desc:"    P550750   nota :    ", tarima:  "   3   "},
+ {folio:    "7" , desc:"    4W5698   nota :     ", tarima:  "   3   "},
+
+  {folio:    "13"    , desc:"    P102745   nota :    ", tarima:  "   1   "},
+ {folio:    "16"    , desc:"    SPE-25-BTA-6    nota :  ", tarima:  "   1   "},
+ {folio:    "17"    , desc:"    39474879   nota :   ", tarima:  "   3   "},
+ {folio:    "18"    , desc:"    P554056   nota :    ", tarima:  "   3   "},
+ {folio:    "21"    , desc:"    S/N   nota : Rectagular 32 x 9, ancho 2-1/2 ", tarima:  "   3   "},
+ {folio:    "22"    , desc:"    179-1502   nota :   ", tarima:  "   3   "},
+ {folio:    "23"    , desc:"    GA-I74   nota :     ", tarima:  "   3   "},
+ {folio:    "24"    , desc:"    M60209306   nota :  ", tarima:  "   3   "},
+ {folio:    "25"    , desc:"    95951299   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "26"    , desc:"    S/N   nota : Cilindro 22-1/2 x 3-1/2    ", tarima:  "   3   "},
+ {folio:    "27"    , desc:"    LF651   nota :  ", tarima:  "   3   "},
+ {folio:    "31"    , desc:"    497508   nota :     ", tarima:  "   1   "},
+ {folio:    "33"    , desc:"    32254690   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "35"    , desc:"    54565205   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "36"    , desc:"    21381   nota :  ", tarima:  "   1   "},
+ {folio:    "37"    , desc:"    36897346   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "38"    , desc:"    56458682   nota :   ", tarima:  "   1   "},
+ {folio:    "39"    , desc:"    49889   nota :  ", tarima:  "   1   "},
+ {folio:    "40"    , desc:"    M16971-1   nota :   ", tarima:  "   1   "},
+ {folio:    "43"    , desc:"    30221501   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "49"    , desc:"    P192745   nota :    ", tarima:  "   1   "},
+ {folio:    "50"    , desc:"    70010831   nota :   ", tarima:  "   3   "},
+ {folio:    "51"    , desc:"    2109093   nota :    ", tarima:  "   3   "},
+ {folio:    "52"    , desc:"    G-II76   nota :     ", tarima:  "   3   "},
+ {folio:    "53"    , desc:"    Dañado   nota :     ", tarima:  "   3   "},
+ {folio:    "54"    , desc:"       nota : Filtro cilindro 40x4  ", tarima:  "   1   "},
+ {folio:    "56"    , desc:"    P164384   nota : Donalson Naranja   ", tarima:  "   1   "},
+ {folio:    "57"    , desc:"    P158671   nota :    ", tarima:  "   3   "},
+ {folio:    "58"    , desc:"    52829   nota : kit  ", tarima:  "   1   "},
+ {folio:    "60"    , desc:"    32281487   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "61"    , desc:"    ARP96C   nota : Golpeado    ", tarima:  "   1   "},
+ {folio:    "62"    , desc:"    P164384   nota : Donalson Naranja   ", tarima:  "   1   "},
+ {folio:    "63"    , desc:"    49750   nota : item 5649750 ", tarima:  "   1   "},
+ {folio:    "64"    , desc:"    39132121   nota :   ", tarima:  "   1   "},
+ {folio:    "65"    , desc:"    35863927   nota :   ", tarima:  "   1   "},
+ {folio:    "66"    , desc:"    411193   nota :     ", tarima:  "   1   "},
+ {folio:    "67"    , desc:"    59J0379   nota :    ", tarima:  "   1   "},
+ {folio:    "68"    , desc:"    5994 1328   nota :  ", tarima:  "   1   "},
+ {folio:    "69"    , desc:"    39421789   nota :   ", tarima:  "   1   "},
+ {folio:    "70"    , desc:"    4W-5701   nota :    ", tarima:  "   3   "},
+ {folio:    "71"    , desc:"    R90P   nota :   ", tarima:  "   1   "},
+ {folio:    "72"    , desc:"    R90T   nota :   ", tarima:  "   1   "},
+ {folio:    "72"    , desc:"    R90T   nota :   ", tarima:  "   1   "},
+ {folio:    "73"    , desc:"    R90T   nota :   ", tarima:  "   1   "},
+ {folio:    "74"    , desc:"    P182072   nota :    ", tarima:  "   1   "},
+ {folio:    "75"    , desc:"    R90T   nota :   ", tarima:  "   1   "},
+ {folio:    "76"    , desc:"    G-297-B   nota :    ", tarima:  "   3   "},
+ {folio:    "78"    , desc:"    R90P   nota :   ", tarima:  "   1   "},
+ {folio:    "79"    , desc:"    GP-406   nota :     ", tarima:  "   3   "},
+ {folio:    "80"    , desc:"    P167410   nota :    ", tarima:  "   1   "},
+ {folio:    "81"    , desc:"    P550861   nota :    ", tarima:  "   3   "},
+ {folio:    "82"    , desc:"    9245812   nota :    ", tarima:  "   3   "},
+ {folio:    "83"    , desc:"    36791895   nota :   ", tarima:  "   1   "},
+ {folio:    "84"    , desc:"    P120307   nota :    ", tarima:  "   3   "},
+ {folio:    "85"    , desc:"    P550132   nota :    ", tarima:  "   3   "},
+ {folio:    "86"    , desc:"    36791895   nota :   ", tarima:  "   1   "},
+ {folio:    "87"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "88"    , desc:"    1597   nota :   ", tarima:  "   3   "},
+ {folio:    "89"    , desc:"    1R-0714   nota :    ", tarima:  "   3   "},
+ {folio:    "90"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "91"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "92"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "93"    , desc:"    AFIIJ12   nota :    ", tarima:  "   1   "},
+ {folio:    "94"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "95"    , desc:"    P550966   nota :    ", tarima:  "   3   "},
+ {folio:    "96"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "97"    , desc:"    P550966   nota :    ", tarima:  "   1   "},
+ {folio:    "98"    , desc:"    P550866   nota :    ", tarima:  "   1   "},
+ {folio:    "100"   , desc:"    54565197   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "101"   , desc:"    P161917   nota :    ", tarima:  "   3   "},
+ {folio:    "102"   , desc:"    P551347   nota :    ", tarima:  "   1   "},
+ {folio:    "103"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "104"   , desc:"    GII76   nota :  ", tarima:  "   3   "},
+ {folio:    "105"   , desc:"    404929   nota : Kit empaque ", tarima:  "   3   "},
+ {folio:    "106"   , desc:"    P120307   nota :    ", tarima:  "   1   "},
+ {folio:    "107"   , desc:"    927B223   nota : Ingresoll Rand ", tarima:  "   3   "},
+ {folio:    "108"   , desc:"    59841676   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "109"   , desc:"    P1167410   nota :   ", tarima:  "   1   "},
+ {folio:    "110"   , desc:"    39875670   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "111"   , desc:"    1R-0750   nota : CAT    ", tarima:  "   1   "},
+ {folio:    "112"   , desc:"    1R-0739   nota : CAT    ", tarima:  "   1   "},
+ {folio:    "113"   , desc:"    1R-0750   nota : CAT    ", tarima:  "   1   "},
+ {folio:    "114"   , desc:"    M60218612   nota :  ", tarima:  "   3   "},
+ {folio:    "115"   , desc:"    1R-0724   nota : CAT    ", tarima:  "   3   "},
+ 
+ {folio:    "117"   , desc:"    9N-3368   nota :    ", tarima:  "   1   "},
+ {folio:    "118"   , desc:"    9N-3368   nota :    ", tarima:  "   1   "},
+ {folio:    "119"   , desc:"    9N-3368   nota :    ", tarima:  "   1   "},
+ {folio:    "120"   , desc:"    9N-3368   nota :    ", tarima:  "   1   "},
+ {folio:    "121"   , desc:"    110-7183   nota : 537 CM    ", tarima:  "   1   "},
+ {folio:    "122"   , desc:"    8P-8837   nota :    ", tarima:  "   1   "},
+ {folio:    "123"   , desc:"    ART CT8959   nota :     ", tarima:  "   1   "},
+ {folio:    "124"   , desc:"    240-0717   nota : KIT   ", tarima:  "   1   "},
+ {folio:    "125"   , desc:"    Empaque   nota : ver Foto   ", tarima:  "   1   "},
+ {folio:    "126"   , desc:"    Filtro   nota : ver Foto    ", tarima:  "   1   "},
+ {folio:    "127"   , desc:"    Empaque   nota : ver Foto   ", tarima:  "   1   "},
+ {folio:    "128"   , desc:"    Filtro   nota : ver Foto    ", tarima:  "   1   "},
+ {folio:    "129"   , desc:"    Empaque   nota : Ingresoll Rand ", tarima:  "   1   "},
+ {folio:    "130"   , desc:"    36791895   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "131"   , desc:"    36791895   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "132"   , desc:"    P554056   nota :    ", tarima:  "   2   "},
+ {folio:    "133"   , desc:"    32242901   nota : Ingresoll Rand    ", tarima:  "   1   "},
+ {folio:    "134"   , desc:"    MD113561   nota :   ", tarima:  "   1   "},
+ {folio:    "135"   , desc:"    95225074   nota :   ", tarima:  "   1   "},
+ {folio:    "136"   , desc:"    475179   nota :     ", tarima:  "   1   "},
+ {folio:    "137"   , desc:"    4M-8794   nota : CAT    ", tarima:  "   1   "},
+ {folio:    "138"   , desc:"       nota : ver Foto  ", tarima:  "   1   "},
+ {folio:    "139"   , desc:"    84010   nota :  ", tarima:  "   1   "},
+ {folio:    "140"   , desc:"    P120307   nota :    ", tarima:  "   3   "},
+ {folio:    "141"   , desc:"    467269   nota :     ", tarima:  "   1   "},
+ {folio:    "142"   , desc:"    36J0660   nota :    ", tarima:  "   1   "},
+ {folio:    "143"   , desc:"    Tapones   nota :    ", tarima:  "   2   "},
+ {folio:    "144"   , desc:"    95100194   nota :   ", tarima:  "   2   "},
+ {folio:    "145"   , desc:"    ML1012   nota :     ", tarima:  "   3   "},
+ {folio:    "146"   , desc:"    92793223   nota :   ", tarima:  "   2   "},
+ {folio:    "147"   , desc:"    P550434   nota :    ", tarima:  "   3   "},
+ {folio:    "148"   , desc:"    Empaque   nota : ver Foto   ", tarima:  "   3   "},
+ {folio:    "149"   , desc:"    4915885   nota : Filtro     ", tarima:  "   2   "},
+ {folio:    "150"   , desc:"    R90P   nota :   ", tarima:  "   2   "},
+ {folio:    "151"   , desc:"    51-5020 1099   nota :   ", tarima:  "   2   "},
+ {folio:    "152"   , desc:"    463667   nota : Parker  ", tarima:  "   2   "},
+ {folio:    "153"   , desc:"    462788   nota :     ", tarima:  "   2   "},
+ {folio:    "154"   , desc:"    93689   nota :  ", tarima:  "   2   "},
+ {folio:    "155"   , desc:"    459153   nota :     ", tarima:  "   2   "},
+ {folio:    "156"   , desc:"    35310556   nota : ver Foto  ", tarima:  "   3   "},
+ {folio:    "157"   , desc:"    8C-5058   nota :    ", tarima:  "   2   "},
+ {folio:    "158"   , desc:"    Deposito agua   nota : ver Foto ", tarima:  "   2   "},
+ {folio:    "159"   , desc:"    1T0132   nota :     ", tarima:  "   2   "},
+ {folio:    "160"   , desc:"    3517292   nota :    ", tarima:  "   2   "},
+ {folio:    "161"   , desc:"    2f1803A0   nota :   ", tarima:  "   3   "},
+ {folio:    "162"   , desc:"    MD006242   nota :   ", tarima:  "   2   "},
+ {folio:    "163"   , desc:"    Sellos   nota : ver Foto    ", tarima:  "   2   "},
+ {folio:    "164"   , desc:"    2I5454   nota :     ", tarima:  "   2   "},
+ {folio:    "165"   , desc:"    Empaque   nota : ver Foto   ", tarima:  "   2   "},
+ {folio:    "166"   , desc:"    Anillo   nota : CAT ", tarima:  "   3   "},
+ {folio:    "167"   , desc:"    CT6V0938   nota :   ", tarima:  "   2   "},
+ {folio:    "168"   , desc:"    J3420   nota :  ", tarima:  "   2   "},
+ {folio:    "169"   , desc:"    56458684   nota :   ", tarima:  "   2   "},
+ {folio:    "170"   , desc:"    Sellos   nota : ver Foto    ", tarima:  "   2   "},
+ {folio:    "171"   , desc:"    37J0017   nota :    ", tarima:  "   2   "},
+ {folio:    "172"   , desc:"    37J0019   nota :    ", tarima:  "   2   "},
+ {folio:    "173"   , desc:"    Interruptor   nota : ver Foto   ", tarima:  "   2   "},
+ {folio:    "174"   , desc:"    7M-8378   nota :    ", tarima:  "   2   "},
+ {folio:    "175"   , desc:"    7M-8378   nota :    ", tarima:  "   2   "},
+ {folio:    "176"   , desc:"    8R-3596   nota : Empaque    ", tarima:  "   2   "},
+ {folio:    "177"   , desc:"    37007390   nota :   ", tarima:  "   2   "},
+ {folio:    "178"   , desc:"    37007390   nota :   ", tarima:  "   2   "},
+ {folio:    "179"   , desc:"    A00006034   nota :  ", tarima:  "   2   "},
+ {folio:    "180"   , desc:"    A00006034   nota :  ", tarima:  "   2   "},
+ {folio:    "181"   , desc:"    27C2   nota :   ", tarima:  "   2   "},
+ {folio:    "182"   , desc:"    P119374   nota :    ", tarima:  "   2   "},
+ {folio:    "183"   , desc:"    HF061100   nota :   ", tarima:  "   2   "},
+ {folio:    "184"   , desc:"    P554056   nota :    ", tarima:  "   2   "},
+ {folio:    "185"   , desc:"    452459   nota :     ", tarima:  "   2   "},
+ {folio:    "186"   , desc:"    54717152   nota : Ingresoll Rand    ", tarima:  "   2   "},
+ {folio:    "187"   , desc:"    P119374   nota :    ", tarima:  "   2   "},
+ {folio:    "188"   , desc:"    54717152   nota : Ingresoll Rand    ", tarima:  "   2   "},
+ {folio:    "189"   , desc:"    LFP936F   nota :    ", tarima:  "   3   "},
+ {folio:    "190"   , desc:"    796 DELPHI   nota : 7111-796    ", tarima:  "   3   "},
+ {folio:    "190"   , desc:"    796 DELPHI   nota : 7111-796    ", tarima:  "   3   "},
+ {folio:    "191"   , desc:"    LFP8115 FN   nota :     ", tarima:  "   3   "},
+ {folio:    "192"   , desc:"    LFP8115 FN   nota :     ", tarima:  "   3   "},
+ {folio:    "193"   , desc:"    32B40-00100   nota :    ", tarima:  "   3   "},
+ {folio:    "194"   , desc:"    32B40-00100   nota :    ", tarima:  "   3   "},
+ {folio:    "195"   , desc:"    PH253   nota :  ", tarima:  "   3   "},
+ {folio:    "196"   , desc:"    LFP-928F   nota :   ", tarima:  "   3   "},
+ {folio:    "197"   , desc:"    LFP-936F   nota :   ", tarima:  "   3   "},
+ {folio:    "198"   , desc:"    8N9803   nota : CAT ", tarima:  "   2   "},
+ {folio:    "199"   , desc:"    LFP936F   nota :    ", tarima:  "   3   "},
+ {folio:    "200"   , desc:"    FF206   nota :  ", tarima:  "   3   "},
+ {folio:    "201"   , desc:"    FF206   nota :  ", tarima:  "   2   "},
+ {folio:    "202"   , desc:"    54565205   nota :   ", tarima:  "   1   "},
+ {folio:    "203"   , desc:"    54468178   nota :   ", tarima:  "   1   "},
+ {folio:    "204"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "205"   , desc:"    P551347   nota :    ", tarima:  "   1   "},
+ {folio:    "206"   , desc:"    54525530   nota :   ", tarima:  "   1   "},
+ {folio:    "207"   , desc:"    54468178   nota :   ", tarima:  "   1   "},
+ {folio:    "208"   , desc:"    54525530   nota :   ", tarima:  "   1   "},
+ {folio:    "209"   , desc:"    P120307   nota :    ", tarima:  "   1   "},
+ {folio:    "210"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "211"   , desc:"    39252887   nota :   ", tarima:  "   1   "},
+ {folio:    "212"   , desc:"    2K-1381   nota :    ", tarima:  "   1   "},
+ {folio:    "213"   , desc:"    54565205   nota :   ", tarima:  "   1   "},
+ {folio:    "214"   , desc:"    AF-1658K   nota :   ", tarima:  "   1   "},
+ {folio:    "215"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "216"   , desc:"    39791895   nota :   ", tarima:  "   1   "},
+ {folio:    "217"   , desc:"    36860336   nota :   ", tarima:  "   1   "},
+ {folio:    "218"   , desc:"    39474879   nota :   ", tarima:  "   1   "},
+ {folio:    "219"   , desc:"    54565205   nota :   ", tarima:  "   1   "},
+ {folio:    "220"   , desc:"    2109093   nota :    ", tarima:  "   1   "},
+ {folio:    "221"   , desc:"    36897346   nota :   ", tarima:  "   1   "},
+ {folio:    "222"   , desc:"    P161917   nota :    ", tarima:  "   1   "},
+ {folio:    "223"   , desc:"    2109093   nota :    ", tarima:  "   1   "},
+ {folio:    "224"   , desc:"    P167410   nota :    ", tarima:  "   1   "},
+ {folio:    "225"   , desc:"    36791895   nota :   ", tarima:  "   1   "},
+ {folio:    "226"   , desc:"    31P146   nota :     ", tarima:  "   1   "},
+ {folio:    "227"   , desc:"    54565197   nota :   ", tarima:  "   1   "},
+ {folio:    "228"   , desc:"    LFH 4204   nota :   ", tarima:  "   1   "},
+ {folio:    "229"   , desc:"    P550434   nota :    ", tarima:  "   2   "},
+ {folio:    "230"   , desc:"    54468178   nota :   ", tarima:  "   1   "},
+ {folio:    "231"   , desc:"    31PO147   nota :    ", tarima:  "   1   "},
+ {folio:    "232"   , desc:"    36860336   nota :   ", tarima:  "   1   "},
+ {folio:    "233"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "234"   , desc:"    59854315   nota :   ", tarima:  "   1   "},
+ {folio:    "235"   , desc:"    P158671   nota :    ", tarima:  "   1   "},
+ {folio:    "236"   , desc:"    Filtro   nota : ver foto    ", tarima:  "   1   "},
+ {folio:    "237"   , desc:"    54565197   nota :   ", tarima:  "   1   "},
+ {folio:    "238"   , desc:"    7E-0558   nota :    ", tarima:  "   1   "},
+ {folio:    "239"   , desc:"    P550434   nota :    ", tarima:  "   1   "},
+ {folio:    "240"   , desc:"    P550434   nota :    ", tarima:  "   2   "},
+ {folio:    "241"   , desc:"    39907167   nota :   ", tarima:  "   1   "},
+ {folio:    "242"   , desc:"    P102745   nota :    ", tarima:  "   1   "},
+ {folio:    "243"   , desc:"    6560800200   nota :     ", tarima:  "   1   "},
+ {folio:    "244"   , desc:"    179-1502   nota :   ", tarima:  "   1   "},
+ {folio:    "245"   , desc:"    P161917   nota :    ", tarima:  "   1   "},
+ {folio:    "246"   , desc:"    59341560   nota :   ", tarima:  "   1   "},
+ {folio:    "247"   , desc:"    A-26496   nota :    ", tarima:  "   1   "},
+ {folio:    "248"   , desc:"    P550912   nota :    ", tarima:  "   1   "},
+ {folio:    "249"   , desc:"    22719421   nota : Valve No-Loss Drain   ", tarima:  "   1   "},
+ {folio:    "250"   , desc:"    557032   nota :     ", tarima:  "   1   "},
+ {folio:    "251"   , desc:"    35357250   nota :   ", tarima:  "   1   "},
+ {folio:    "252"   , desc:"    59854315   nota :   ", tarima:  "   1   "},
+ {folio:    "253"   , desc:"    492110   nota :     ", tarima:  "   3   "},
+ {folio:    "254"   , desc:"    36878361   nota : relay izust   ", tarima:  "   1   "},
+ {folio:    "255"   , desc:"    3A-7281   nota : Join Oil Seal  ", tarima:  "   1   "},
+ {folio:    "256"   , desc:"    95603155   nota : O-Ring    ", tarima:  "   4   "},
+ {folio:    "257"   , desc:"    A00007488   nota : Kit  ", tarima:  "   2   "},
+ {folio:    "258"   , desc:"    23324   nota :  ", tarima:  "   2   "},
+ {folio:    "259"   , desc:"    491367   nota :     ", tarima:  "   5   "},
+ {folio:    "260"   , desc:"    148-4685   nota : CM Blk    ", tarima:  "   1   "},
+ {folio:    "261"   , desc:"    P182072   nota :    ", tarima:  "   1   "},
+ {folio:    "262"   , desc:"    35357250   nota :   ", tarima:  "   2   "},
+ {folio:    "263"   , desc:"    36897346   nota :   ", tarima:  "   1   "},
+ {folio:    "264"   , desc:"    39474879   nota :   ", tarima:  "   1   "},
+ {folio:    "265"   , desc:"    35357250   nota :   ", tarima:  "   3   "},
+ {folio:    "266"   , desc:"    56274780   nota : Kit   ", tarima:  "   1   "},
+ {folio:    "267"   , desc:"    441555   nota :     ", tarima:  "   4   "},
+ {folio:    "268"   , desc:"    2I5829   nota :     ", tarima:  "   4   "},
+ {folio:    "269"   , desc:"    971035   nota :     ", tarima:  "   1   "},
+ {folio:    "270"   , desc:"    92986835   nota :   ", tarima:  "   1   "},
+ {folio:    "271"   , desc:"    PP1775   nota :     ", tarima:  "   6   "},
+ {folio:    "272"   , desc:"    3X0083   nota :     ", tarima:  "   1   "},
+ {folio:    "273"   , desc:"    462329   nota : Banda   ", tarima:  "   1   "},
+ {folio:    "274"   , desc:"    2w9369   nota :     ", tarima:  "   2   "},
+ {folio:    "275"   , desc:"    95136412   nota :   ", tarima:  "   1   "},
+ {folio:    "276"   , desc:"    F315609000   nota :     ", tarima:  "   1   "},
+ {folio:    "277"   , desc:"    954024   nota :     ", tarima:  "   1   "},
+ {folio:    "278"   , desc:"    A00000829   nota :  ", tarima:  "   1   "},
+ {folio:    "279"   , desc:"    4w3321   nota :     ", tarima:  "   1   "},
+ {folio:    "280"   , desc:"    95358552   nota :   ", tarima:  "   1   "},
+ {folio:    "281"   , desc:"    95022331   nota :   ", tarima:  "   1   "},
+ {folio:    "282"   , desc:"    9718102500   nota :     ", tarima:  "   1   "},
+ {folio:    "283"   , desc:"    470630   nota : Belt    ", tarima:  "   4   "},
+ {folio:    "284"   , desc:"    88773   nota :  ", tarima:  "   1   "},
+ {folio:    "285"   , desc:"    503025   nota : kit ", tarima:  "   3   "},
+ {folio:    "286"   , desc:"    56459112   nota :   ", tarima:  "   1   "},
+ {folio:    "287"   , desc:"    5J5020   nota :     ", tarima:  "   2   "},
+ {folio:    "288"   , desc:"    9M3711   nota :     ", tarima:  "   1   "},
+ {folio:    "289"   , desc:"    R24548   nota :     ", tarima:  "   1   "},
+ {folio:    "290"   , desc:"    3A13601   nota :    ", tarima:  "   1   "},
+ {folio:    "291"   , desc:"    mc8022628   nota :  ", tarima:  "   1   "},
+ {folio:    "292"   , desc:"    65689   nota : Gasket kit   ", tarima:  "   1   "},
+ {folio:    "293"   , desc:"    3J3196   nota :     ", tarima:  "   1   "},
+ {folio:    "294"   , desc:"    1428540   nota :    ", tarima:  "   1   "},
+ {folio:    "295"   , desc:"    619729   nota :     ", tarima:  "   1   "},
+ {folio:    "296"   , desc:"    39196647   nota :   ", tarima:  "   2   "},
+ {folio:    "297"   , desc:"    95018446   nota :   ", tarima:  "   1   "},
+ {folio:    "298"   , desc:"    MD611463   nota :   ", tarima:  "   1   "},
+ {folio:    "299"   , desc:"    59951954   nota :   ", tarima:  "   2   "},
+ {folio:    "300"   , desc:"    59841700   nota :   ", tarima:  "   4   "},
+ {folio:    "301"   , desc:"    3A9208   nota :     ", tarima:  "   4   "},
+ {folio:    "302"   , desc:"    9H0415   nota :     ", tarima:  "   2   "},
+ {folio:    "303"   , desc:"       nota : Gasket    ", tarima:  "   1   "},
+ {folio:    "304"   , desc:"    6Y1066   nota :     ", tarima:  "   3   "},
+ {folio:    "305"   , desc:"    9192016700   nota :     ", tarima:  "   1   "},
+ {folio:    "306"   , desc:"    605010440   nota :  ", tarima:  "   1   "},
+ {folio:    "307"   , desc:"    409403   nota :     ", tarima:  "   2   "},
+ {folio:    "308"   , desc:"    4244844   nota :    ", tarima:  "   4   "},
+ {folio:    "309"   , desc:"    429810   nota :     ", tarima:  "   3   "},
+ {folio:    "310"   , desc:"       nota : Gasket kit    ", tarima:  "   1   "},
+ {folio:    "311"   , desc:"    59428854   nota : Tirob cable   ", tarima:  "   1   "},
+ {folio:    "313"   , desc:"    95286308   nota : Reten ", tarima:  "   1   "},
+ {folio:    "314"   , desc:"       nota : Gaskets   ", tarima:  "   10  "},
+ {folio:    "315"   , desc:"    2079718   nota :    ", tarima:  "   1   "},
+ {folio:    "316"   , desc:"    2079718   nota :    ", tarima:  "   2   "},
+ {folio:    "317"   , desc:"    689826   nota :     ", tarima:  "   1   "},
+ {folio:    "318"   , desc:"    39551619   nota :   ", tarima:  "   1   "},
+ {folio:    "319"   , desc:"       nota : Int mtto Maq FRP  ", tarima:  "   2   "},
+ {folio:    "320"   , desc:"    59867713   nota : Plate ", tarima:  "   1   "},
+ {folio:    "321"   , desc:"    35572528   nota : Gasket gear   ", tarima:  "   1   "},
+ {folio:    "322"   , desc:"    97203   nota :  ", tarima:  "   3   "},
+ {folio:    "323"   , desc:"    44233   nota : Manija   ", tarima:  "   6   "},
+ {folio:    "324"   , desc:"       nota : Gasket Kit    ", tarima:  "   1   "},
+ {folio:    "325"   , desc:"       nota : Gaskets   ", tarima:  "   4   "},
+ {folio:    "326"   , desc:"    4915885   nota :    ", tarima:  "   1   "},
+ {folio:    "327"   , desc:"    52041   nota :  ", tarima:  "   4   "},
+ {folio:    "328"   , desc:"    1672452   nota : Seal type  ", tarima:  "   2   "},
+ {folio:    "329"   , desc:"    CT60938   nota :    ", tarima:  "   1   "},
+ {folio:    "330"   , desc:"    63347   nota :  ", tarima:  "   1   "},
+ {folio:    "331"   , desc:"       nota : Seal puerta   ", tarima:  "   1   "},
+ {folio:    "332"   , desc:"    84010   nota : Rewind   ", tarima:  "   1   "},
+ {folio:    "333"   , desc:"    37805   nota : Ring ", tarima:  "   1   "},
+ {folio:    "334"   , desc:"    4w3321   nota : Arnes   ", tarima:  "   1   "},
+ {folio:    "335"   , desc:"    #¡REF!  ", tarima:  "   1   "},
+ {folio:    "336"   , desc:"    4k1388   nota : Seal    ", tarima:  "   4   "},
+ {folio:    "337"   , desc:"    PJ4630   nota : Ring    ", tarima:  "   3   "},
+ {folio:    "338"   , desc:"    3046171601   nota : Gasket  ", tarima:  "   1   "},
+ {folio:    "339"   , desc:"    862570020   nota : carbon   ", tarima:  "   1   "},
+ {folio:    "340"   , desc:"    3184005610   nota : Sello   ", tarima:  "   1   "},
+ {folio:    "341"   , desc:"    P550434   nota :    ", tarima:  "   1   "},
+ {folio:    "342"   , desc:"    947009110   nota : Ring ", tarima:  "   2   "},
+ {folio:    "343"   , desc:"    54565197   nota :   ", tarima:  "   1   "},
+ {folio:    "344"   , desc:"    72346   nota :  ", tarima:  "   1   "},
+ {folio:    "345"   , desc:"    P550861   nota :    ", tarima:  "   1   "},
+ {folio:    "346"   , desc:"    P550434   nota :    ", tarima:  "   1   "},
+ {folio:    "347"   , desc:"    54565205   nota :   ", tarima:  "   1   "},
+ {folio:    "348"   , desc:"    5PE25BTA6   nota :  ", tarima:  "   1   "},
+ {folio:    "349"   , desc:"    37044203   nota : parking   ", tarima:  "   1   "},
+ {folio:    "350"   , desc:"    409414   nota :     ", tarima:  "   1   "},
+ {folio:    "351"   , desc:"    38583   nota : tapa ", tarima:  "   1   "},
+ {folio:    "352"   , desc:"    710268   nota :     ", tarima:  "   1   "},
+ {folio:    "353"   , desc:"    4w5701   nota : Esponja ", tarima:  "   1   "},
+ {folio:    "354"   , desc:"    2I5426   nota :     ", tarima:  "   1   "},
+ {folio:    "355"   , desc:"       nota :   ", tarima:  "   2   "},
+ {folio:    "356"   , desc:"    9H0415   nota : Ring seal   ", tarima:  "   2   "},
+ {folio:    "357"   , desc:"    H21503   nota : Manguera    ", tarima:  "   1   "},
+ {folio:    "358"   , desc:"    52698   nota : calcas   ", tarima:  "   7   "},
+ {folio:    "359"   , desc:"    7M8378   nota : Laina   ", tarima:  "   1   "},
+ {folio:    "360"   , desc:"    9PZ946   nota : Ring 030 over   ", tarima:  "   2   "},
+ {folio:    "361"   , desc:"    155561   nota : Ring    ", tarima:  "   1   "},
+ {folio:    "362"   , desc:"    P158671   nota :    ", tarima:  "   1   "},
+ {folio:    "363"   , desc:"    30418834   nota :   ", tarima:  "   1   "},
+ {folio:    "364"   , desc:"    54565197   nota :   ", tarima:  "   1   "},
+ {folio:    "365"   , desc:"    P164384   nota :    ", tarima:  "   1   "},
+ {folio:    "366"   , desc:"    GP406   nota :  ", tarima:  "   1   "},
+ {folio:    "367"   , desc:"    54717152   nota :   ", tarima:  "   1   "},
+ {folio:    "368"   , desc:"    P550510   nota :    ", tarima:  "   2   "},
+ {folio:    "369"   , desc:"    2582309   nota :    ", tarima:  "   2   "},
+ {folio:    "370"   , desc:"    1M8736   nota :     ", tarima:  "   1   "},
+ {folio:    "371"   , desc:"    9G4872   nota : Estopero    ", tarima:  "   3   "},
+ {folio:    "372"   , desc:"       nota : Estopero  ", tarima:  "   4   "},
+ {folio:    "373"   , desc:"    4w5698   nota :     ", tarima:  "   2   "},
+ {folio:    "374"   , desc:"    LFH4204   nota :    ", tarima:  "   1   "},
+ {folio:    "375"   , desc:"       nota : Calcas Ingresoll  ", tarima:  "   1   "},
+ {folio:    "376"   , desc:"    PP2109   nota : Placa electrica ", tarima:  "   1   "},
+ {folio:    "377"   , desc:"    39474879   nota :   ", tarima:  "   1   "},
+ {folio:    "378"   , desc:"    2M5284   nota :     ", tarima:  "   1   "},
+ {folio:    "379"   , desc:"    9H6454   nota :     ", tarima:  "   4   "},
+ {folio:    "380"   , desc:"    F301506023   nota :     ", tarima:  "   1   "},
+ {folio:    "381"   , desc:"    39236898   nota :   ", tarima:  "   2   "},
+ {folio:    "382"   , desc:"    3D1115   nota :     ", tarima:  "   2   "},
+ {folio:    "383"   , desc:"    458684   nota :     ", tarima:  "   1   "},
+ {folio:    "384"   , desc:"    370130432   nota :  ", tarima:  "   3   "},
+ {folio:    "385"   , desc:"    458684   nota :     ", tarima:  "   4   "},
+ {folio:    "386"   , desc:"    912530260J   nota :     ", tarima:  "   4   "},
+ {folio:    "387"   , desc:"    36782647   nota :   ", tarima:  "   3   "},
+ {folio:    "388"   , desc:"    9c4354   nota : kit ", tarima:  "   2   "},
+ {folio:    "389"   , desc:"    411836   nota : seal oil    ", tarima:  "   10  "},
+ {folio:    "390"   , desc:"    2I7618   nota :     ", tarima:  "   5   "},
+ {folio:    "391"   , desc:"    515308800   nota : lens ", tarima:  "   1   "},
+ {folio:    "392"   , desc:"    94253   nota : seal kit ", tarima:  "   1   "},
+ {folio:    "393"   , desc:"    49613   nota :  ", tarima:  "   2   "},
+ {folio:    "394"   , desc:"    8I2577   nota :     ", tarima:  "   1   "},
+ {folio:    "395"   , desc:"    36893634   nota :   ", tarima:  "   1   "},
+ {folio:    "396"   , desc:"    2892949   nota :    ", tarima:  "   2   "},
+ {folio:    "397"   , desc:"    72358   nota : water tube   ", tarima:  "   1   "},
+ {folio:    "398"   , desc:"       nota : conector  ", tarima:  "   10  "},
+ {folio:    "399"   , desc:"    8c9132   nota : Seal    ", tarima:  "   1   "},
+ {folio:    "400"   , desc:"    4H8792   nota : M6021861126 ", tarima:  "   3   "},
+ {folio:    "401"   , desc:"    LFP815FN   nota :   ", tarima:  "   3   "},
+ {folio:    "402"   , desc:"    JLFP928F   nota :   ", tarima:  "   3   "},
+ {folio:    "403"   , desc:"    P551347   nota :    ", tarima:  "   2   "},
+ {folio:    "404"   , desc:"       nota :   ", tarima:  "   2   "},
+ {folio:    "405"   , desc:"    32242901   nota : Ingresoll Rand    ", tarima:  "   2   "},
+ {folio:    "406"   , desc:"    CA326   nota :  ", tarima:  "   3   "},
+ {folio:    "407"   , desc:"    LFP-936F   nota :   ", tarima:  "   3   "},
+ {folio:    "408"   , desc:"    LFP 928F   nota :   ", tarima:  "   3   "},
+ {folio:    "409"   , desc:"    LFH4204   nota :    ", tarima:  "   3   "},
+ {folio:    "410"   , desc:"    LFP928F   nota :    ", tarima:  "   3   "},
+ {folio:    "411"   , desc:"    R90T   nota :   ", tarima:  "   3   "},
+ {folio:    "412"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "413"   , desc:"    IFH4204   nota :    ", tarima:  "   2   "},
+ {folio:    "414"   , desc:"    RS-3387   nota :    ", tarima:  "   3   "},
+ {folio:    "415"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "416"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "417"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "418"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "419"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "420"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "421"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "422"   , desc:"    P550371   nota :    ", tarima:  "   3   "},
+ {folio:    "423"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "424"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "425"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "426"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "427"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "428"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "429"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "430"   , desc:"    P551304   nota :    ", tarima:  "   3   "},
+ {folio:    "431"   , desc:"    2109093   nota :    ", tarima:  "   3   "},
+ {folio:    "432"   , desc:"    14971-11180   nota :    ", tarima:  "   2   "},
+ {folio:    "433"   , desc:"    2277449 CAT   nota :    ", tarima:  "   3   "},
+ {folio:    "434"   , desc:"    BALERO 6410   nota :    ", tarima:  "   2   "},
+ {folio:    "435"   , desc:"    P182072   nota :    ", tarima:  "   2   "},
+ {folio:    "436"   , desc:"    Reten IR   nota : ver Foto  ", tarima:  "   2   "},
+ {folio:    "437"   , desc:"    84010   nota : ver Foto ", tarima:  "   2   "},
+ {folio:    "438"   , desc:"    54717152   nota : IR    ", tarima:  "   3   "},
+ {folio:    "439"   , desc:"    Empaque   nota : ver Foto   ", tarima:  "   2   "},
+ {folio:    "440"   , desc:"    92793223   nota : Bolsa (440, 441, 442,443) ", tarima:  "   2   "},
+ {folio:    "441"   , desc:"    92793223   nota : Bolsa (440, 441, 442,443) ", tarima:  "   2   "},
+ {folio:    "442"   , desc:"    92793223   nota : Bolsa (440, 441, 442,443) ", tarima:  "   2   "},
+ {folio:    "443"   , desc:"    92793223   nota : Bolsa (440, 441, 442,443) ", tarima:  "   2   "},
+ {folio:    "444"   , desc:"    497482   nota :     ", tarima:  "   2   "},
+ {folio:    "445"   , desc:"    3S9643   nota : CAT ", tarima:  "   2   "},
+ {folio:    "446"   , desc:"    HF6212   nota :     ", tarima:  "   2   "},
+ {folio:    "447"   , desc:"    54717152   nota :   ", tarima:  "   2   "},
+ {folio:    "448"   , desc:"    7E9262   nota : CAT ", tarima:  "   2   "},
+ {folio:    "449"   , desc:"    54717152   nota :   ", tarima:  "   3   "},
+ {folio:    "450"   , desc:"    9186101600   nota : DAÑADO  ", tarima:  "   3   "},
+ {folio:    "451"   , desc:"    179-1502   nota : CAT   ", tarima:  "   3   "},
+ {folio:    "452"   , desc:"    54717152   nota :   ", tarima:  "   2   "},
+ {folio:    "453"   , desc:"    P158871   nota :    ", tarima:  "   2   "},
+ {folio:    "454"   , desc:"    PX-0468 LINK BELT   nota : bolsa (454, 455, 456, 457, 458, 459) ", tarima:  "   2   "},
+ {folio:    "455"   , desc:"    PX-0468 LINK BELT   nota : bolsa (454, 455, 456, 457, 458, 459) ", tarima:  "   2   "},
+ {folio:    "456"   , desc:"    PX-0468 LINK BELT   nota : bolsa (454, 455, 456, 457, 458, 459) ", tarima:  "   2   "},
+ {folio:    "457"   , desc:"    PX-0468 LINK BELT   nota : bolsa (454, 455, 456, 457, 458, 459) ", tarima:  "   2   "},
+ {folio:    "458"   , desc:"    PX-0468 LINK BELT   nota : bolsa (454, 455, 456, 457, 458, 459) ", tarima:  "   2   "},
+ {folio:    "459"   , desc:"    PX-0468 DAÑADO   nota : bolsa (454, 455, 456, 457, 458, 459)    ", tarima:  "   2   "},
+ {folio:    "460"   , desc:"    P158671   nota :    ", tarima:  "   2   "},
+ {folio:    "461"   , desc:"    9186101600   nota :     ", tarima:  "   2   "},
+ {folio:    "462"   , desc:"    54717152   nota :   ", tarima:  "   3   "},
+ {folio:    "463"   , desc:"    54717152   nota :   ", tarima:  "   3   "},
+ {folio:    "464"   , desc:"    CA3373   nota :     ", tarima:  "   3   "},
+ {folio:    "465"   , desc:"    44016616   nota : Ingresoll Rand    ", tarima:  "   2   "},
+ {folio:    "466"   , desc:"    54717152   nota :   ", tarima:  "   3   "},
+ {folio:    "467"   , desc:"    P158671   nota :    ", tarima:  "   3   "},
+ {folio:    "468"   , desc:"    800618   nota :     ", tarima:  "   3   "},
+ {folio:    "469"   , desc:"    7G-5674   nota :    ", tarima:  "   2   "}
+
     ];
 
-    const cuerpo = document.getElementById('cuerpoTabla');
-
     function cargarTabla() {
-        if (!cuerpo) return; // Seguridad para evitar errores si no encuentra la tabla
-        cuerpo.innerHTML = ""; 
-        
-        inventarioBodega.forEach(p => {
-            const fila = `<tr>
+        const cuerpo = document.getElementById('cuerpoTabla');
+        if (!cuerpo) return;
+
+        let contenidoHtml = "";
+
+        for (let i = 0; i < inventarioBodega.length; i++) {
+            const p = inventarioBodega[i];
+            
+            const folioLimpio = p.folio ? p.folio.toString().trim() : "0";
+            const descLimpia = p.desc ? p.desc.trim() : "Sin descripción";
+            const tarimaLimpia = p.tarima ? p.tarima.toString().trim() : "N/A";
+
+            contenidoHtml += `
+            <tr>
                 <td>
-                    <a href="img/bodega/${p.folio}.jpg" target="_blank">
-                        <img src="img/bodega/${p.folio}.jpg" class="img-pieza" alt="Foto ${p.folio}" onerror="this.src='img/sin-foto.jpg'">
+                    <a href="img/bodega/${folioLimpio}.jpg" target="_blank">
+                        <img src="img/bodega/${folioLimpio}.jpg" class="img-pieza" 
+                             alt="F-${folioLimpio}" 
+                             onerror="this.src='img/sin-foto.jpg'">
                     </a>
                 </td>
-                <td style="font-weight:bold; color: #333;">${p.folio}</td>
-                <td>${p.desc}</td>
-                <td class="hide-mobile"><span class="badge-loc">📍 Tarima ${p.tarima}</span></td>
+                <td style="font-weight:bold; color: #333;">${folioLimpio}</td>
+                <td>${descLimpia}</td>
+                <td class="hide-mobile"><span class="badge-loc">📍 Tarima ${tarimaLimpia}</span></td>
                 <td style="text-align:center;">
-                    <a href="img/bodega/${p.folio}.jpg" target="_blank" style="text-decoration:none; font-size: 1.2rem;" title="Ver imagen completa">👁️</a>
+                    <a href="img/bodega/${folioLimpio}.jpg" target="_blank" style="text-decoration:none;">👁️</a>
                 </td>
             </tr>`;
-            cuerpo.innerHTML += fila;
-        });
+        }
+        cuerpo.innerHTML = contenidoHtml;
     }
 
     function filtrarTabla() {
-        const busqueda = document.getElementById('buscador').value.toUpperCase().trim();
+        const input = document.getElementById('buscador');
+        const cuerpo = document.getElementById('cuerpoTabla');
+        const busqueda = input.value.toUpperCase().trim();
         const filas = cuerpo.getElementsByTagName('tr');
         
         for (let i = 0; i < filas.length; i++) {
             const textoFila = filas[i].textContent || filas[i].innerText;
-            // Si el texto coincide, mostramos la fila, si no, la ocultamos
             filas[i].style.display = textoFila.toUpperCase().indexOf(busqueda) > -1 ? "" : "none";
         }
     }
 
-    // Ejecutamos la carga inicial
-    cargarTabla();
+    // Iniciar carga
+    document.addEventListener('DOMContentLoaded', cargarTabla);
 </script>
+
 </body>
 </html>
