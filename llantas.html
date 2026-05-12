@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Llantas - Regio Fletes</title>
+    <style>
+        /* Estilos inspirados en Prodynamics con colores de Regio Fletes */
+        :root { --regio-green: #006400; --regio-white: #ffffff; --bg-body: #f0f2f5; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg-body); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; }
+        
+        header { border-bottom: 3px solid var(--regio-green); margin-bottom: 30px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; border-radius: 8px; }
+        h2 { color: var(--regio-green); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        
+        #buscador { width: 100%; padding: 15px; margin-bottom: 30px; border: 2px solid #ddd; border-radius: 30px; font-size: 1.1rem; outline: none; box-sizing: border-box; transition: 0.3s; }
+        #buscador:focus { border-color: var(--regio-green); box-shadow: 0 0 8px rgba(0,100,0,0.1); }
+
+        /* Grid de Tarjetas */
+        .grid-llantas { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+        
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); transition: transform 0.3s; border: 1px solid #eee; display: flex; flex-direction: column; text-align: center; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+        
+        .img-container { width: 100%; height: 200px; background: #fff; display: flex; align-items: center; justify-content: center; padding: 15px; box-sizing: border-box; }
+        .img-llanta { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+        .info { padding: 20px; flex-grow: 1; }
+        .id-label { font-size: 0.8rem; color: #999; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; }
+        .marca-modelo { font-size: 1.1rem; font-weight: bold; color: #333; margin-bottom: 10px; display: block; }
+        .medida { font-size: 1rem; color: var(--regio-green); font-weight: bold; background: #e8f5e9; padding: 5px 15px; border-radius: 15px; display: inline-block; }
+        
+        .detalles-footer { border-top: 1px solid #eee; padding: 15px; background: #fcfcfc; display: flex; justify-content: space-between; align-items: center; }
+        .estado-tag { font-size: 0.85rem; font-weight: bold; color: #e65100; text-transform: uppercase; }
+        .btn-ver { background: var(--regio-green); color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 0.85rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h2>Inventario de Llantas</h2>
+            <small style="color: #666;">Regio Fletes - Consulta Visual</small>
+        </div>
+        <a href="index.html" style="color: var(--regio-green); font-weight: bold; text-decoration: none;">← Volver al Menú</a>
+    </header>
+
+    <input type="text" id="buscador" onkeyup="filtrarLlantas()" placeholder="Buscar por ID, Medida, Marca o Estado...">
+
+    <div class="grid-llantas" id="contenedorLlantas">
+        </div>
+</div>
+
+<script>
+    // LISTA DE DATOS (Agrega aquí todas tus llantas)
+    // El ID debe ser el mismo que el nombre de la foto (ej: 4520.jpg)
+    const llantas = [
+         {id:   "1" , marca:"   MAXXIS  ", modelo:" M9/2Y   ", medida:" AT 25X10-12     ",estado:"  Media vida  "},
+ {id:   "2" , marca:"   MAXXIS  ", modelo:" M9/2Y   ", medida:" AT 25X10-12     ",estado:"  Media vida  "},
+ {id:   "3" , marca:"   MAXXIS  ", modelo:" M911Y   ", medida:" AT 25x 8-12 ",estado:"  Media vida  "},
+ {id:   "4" , marca:"   MICHELIN    ", modelo:" 107H LTX M+S    ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+ {id:   "5" , marca:"   BRIDGEESTONE    ", modelo:" R623GZ  ", medida:" 205/70 R15  ",estado:"  Media vida  "},
+ {id:   "6" , marca:"   TURANZA ", modelo:" ER 300  ", medida:" 205/55 R16  ",estado:"  Media vida  "},
+ {id:   "7" , marca:"   MICHELIN    ", modelo:" LTX M/S ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+ {id:   "8" , marca:"   BRIDGEESTONE    ", modelo:" R623    ", medida:" 205/70 R15  ",estado:"  Media vida  "},
+ {id:   "9" , marca:"   MICHELIN    ", modelo:" LTX A/S ", medida:" P235/65 R17 ",estado:"  Media vida  "},
+ {id:   "10"    , marca:"   TURANZA ", modelo:" 91V ", medida:" 205/55 R16  ",estado:"  Media vida  "},
+ {id:   "11"    , marca:"   MICHELIN    ", modelo:" 105T LATITUDE   ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+ {id:   "12"    , marca:"   YOKOHAMA    ", modelo:" 0   ", medida:" 195/50 VR15 ",estado:"  Media vida  "},
+ {id:   "13"    , marca:"   BRIDGEESTONE    ", modelo:" 102 T   ", medida:" 225/65 R17  ",estado:"  Media vida  "},
+ {id:   "14"    , marca:"   HANKOOK ", modelo:" RA08 RADIAL ", medida:" 185 R14C    ",estado:"  Media vida  "},
+ {id:   "15"    , marca:"   BRIDGEESTONE    ", modelo:" R623    ", medida:" 205/70 R15  ",estado:"  Media vida  "},
+ {id:   "16"    , marca:"   MICHELIN    ", modelo:" 103S    ", medida:" 235/65 R17  ",estado:"  Media vida  "},
+ {id:   "17"    , marca:"   FIRESTONE   ", modelo:" 0   ", medida:" 195 R15C    ",estado:"  Media vida  "},
+ {id:   "18"    , marca:"   MICHELIN    ", modelo:" LT  ", medida:" 265/70 R17  ",estado:"  Media vida  "},
+ {id:   "19"    , marca:"   BFGOODRICH  ", modelo:" 98H ", medida:" 215/65 R16  ",estado:"  Media vida  "},
+ {id:   "20"    , marca:"   MICHELIN    ", modelo:" LTX ", medida:" 265/70 R17  ",estado:"  Media vida  "},
+ {id:   "21"    , marca:"   NEXEN   ", modelo:" RADIAL HTX RHS  ", medida:" 235/80 R17  ",estado:"  Media vida  "},
+ {id:   "22"    , marca:"   MICHELIN    ", modelo:" XCA RADIAL  ", medida:" 7.5 R17 ",estado:"  Media vida  "},
+ {id:   "23"    , marca:"   FIRESTONE   ", modelo:" 0   ", medida:" 215/80 R15C ",estado:"  Media vida  "},
+ {id:   "24"    , marca:"   MICHELIN    ", modelo:" 105T    ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+ {id:   "25"    , marca:"   BRIDGESTONE ", modelo:" 102T    ", medida:" 225/65 R17  ",estado:"  Media vida  "},
+ {id:   "26"    , marca:"   MICHELIN    ", modelo:" 0   ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+ {id:   "27"    , marca:"   PIRELI  ", modelo:" 107 Y   ", medida:" 295/35 R21  ",estado:"  Media vida  "},
+ {id:   "28"    , marca:"   MICHELIN    ", modelo:" 107 Y   ", medida:" 295/35 R21  ",estado:"  Media vida  "},
+ {id:   "29"    , marca:"   MICHELIN    ", modelo:" 105T    ", medida:" 245/65 R17  ",estado:"  Media vida  "},
+
+    ];
+
+    function mostrarLlantas() {
+        const contenedor = document.getElementById('contenedorLlantas');
+        contenedor.innerHTML = llantas.map(llanta => `
+            <div class="card">
+                <div class="img-container">
+                    <img src="img/llantas/${llanta.id}.jpg" class="img-llanta" 
+                         onerror="this.src='img/sin-foto.jpg'">
+                </div>
+                <div class="info">
+                    <div class="id-label">ID: ${llanta.id}</div>
+                    <span class="marca-modelo">${llanta.marca}</span>
+                    <small style="color: #666; display: block; margin-bottom: 8px;">${llanta.modelo}</small>
+                    <div class="medida">${llanta.medida}</div>
+                </div>
+                <div class="detalles-footer">
+                    <span class="estado-tag">${llanta.estado}</span>
+                    <a href="img/llantas/${llanta.id}.jpg" target="_blank" class="btn-ver">VER FOTO</a>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function filtrarLlantas() {
+        const busqueda = document.getElementById('buscador').value.toUpperCase();
+        const cards = document.getElementsByClassName('card');
+        
+        for (let card of cards) {
+            const texto = card.innerText.toUpperCase();
+            card.style.display = texto.includes(busqueda) ? "" : "none";
+        }
+    }
+
+    // Cargar las llantas al abrir la página
+    document.addEventListener('DOMContentLoaded', mostrarLlantas);
+</script>
+
+</body>
+</html>
